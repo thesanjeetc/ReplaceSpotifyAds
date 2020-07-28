@@ -1,12 +1,3 @@
-// When an ad is detected, this script mutes the Spotify music player and plays custom audio files instead
-
-// Paste in console of web app / PWA
-
-// Add your own audio file URLs below to replace the ads
-// Or empty to play nothing
-
-// Extension reload required on change
-
 let tunes;
 
 let tune = new Audio();
