@@ -18,6 +18,7 @@ A Chrome extension to replace Spotify ads with your own audio files.
 1. Drag your custom audio files into the `audio` folder inside the `ReplaceSpotifyAds-master` extension folder.
 1. Add the audio filenames to the `audio` array in `audio.json`.
 1. After reloading Spotify, ads will be replaced by a random audio file from the stated `audio` directory.
+
 \
 \
 <a href="https://www.buymeacoffee.com/thesanjeetc" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
