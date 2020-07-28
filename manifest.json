@@ -13,5 +13,6 @@
       "js": ["inject.js"],
       "run_at": "document_end"
     }
-  ]
+  ],
+  "web_accessible_resources": ["audio/*", "audio.json"]
 }

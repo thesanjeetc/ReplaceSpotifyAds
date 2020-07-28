@@ -7,51 +7,51 @@
 
 // Extension reload required on change
 
-//-------------------------------------------------------//
+let tunes;
 
-let tunes = [
-  "https://cdn2.melodyloops.com/mp3/preview-remembering-burian-1262.ogg",
-  "https://cdn2.melodyloops.com/mp3/preview-yoga-and-zen-1308.ogg",
-  "https://cdn2.melodyloops.com/mp3/preview-rise-of-a-hero-1138.ogg",
-];
+let tune = new Audio();
+let muted = false;
 
-//-------------------------------------------------------//
+let muteSelector = ".spoticon-volume-16.control-button.volume-bar__icon";
+let disabledSkipSelector = ".spoticon-skip-forward-16.control-button--disabled";
+
+let url = chrome.runtime.getURL("audio.json");
+
+fetch(url)
+  .then((response) => response.json())
+  .then((json) => {
+    tunes = json["audio"];
+  });
+
+const waitForAd = () => {
+  let skipButton = document.querySelector(disabledSkipSelector);
+
+  if (skipButton != null) {
+    setTimeout(() => waitForAd(), 200);
+  } else {
+    tune.pause();
+
+    muted = false;
+    muteButton.click();
+  }
+};
+
+const playTune = () => {
+  if (tunes.length != 0) {
+    src = tunes[Math.floor(Math.random() * tunes.length)];
+    tune.src = chrome.runtime.getURL("audio/" + src);
+
+    tune.currentTime = 0;
+    tune.play();
+
+    tune.onended = () => {
+      playTune();
+    };
+  }
+};
 
 window.addEventListener("load", (e) => {
-  let muteSelector = ".spoticon-volume-16.control-button.volume-bar__icon";
-  let disabledSkipSelector =
-    ".spoticon-skip-forward-16.control-button--disabled";
-
   let muteButton = document.querySelector(muteSelector);
-
-  let tune = new Audio();
-  let muted = false;
-
-  const waitForAd = () => {
-    let skipButton = document.querySelector(disabledSkipSelector);
-
-    if (skipButton != null) {
-      setTimeout(() => waitForAd(), 200);
-    } else {
-      tune.pause();
-
-      muted = false;
-      muteButton.click();
-    }
-  };
-
-  const playTune = () => {
-    if (tunes.length != 0) {
-      tune.src = tunes[Math.floor(Math.random() * tunes.length)];
-
-      tune.currentTime = 0;
-      tune.play();
-
-      tune.onended = () => {
-        playTune();
-      };
-    }
-  };
 
   setInterval(() => {
     if (!muted) {
@@ -67,4 +67,6 @@ window.addEventListener("load", (e) => {
       }
     }
   }, 200);
+
+  playTune();
 });
