@@ -4,6 +4,11 @@
 
 A Chrome extension to replace Spotify ads with your own audio files.
 
+### How It Works
+1. An ad is detected when the skip button becomes disabled.
+1. The Spotify player is muted and custom audio is played.
+1. This happens until the skip button is re-enabled.
+
 ### Installation - Google Chrome
 
 1. Download this repo as a [ZIP file from GitHub](https://github.com/thesanjeetc/ReplaceSpotifyAds/archive/master.zip).
