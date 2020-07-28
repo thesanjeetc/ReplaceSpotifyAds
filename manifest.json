@@ -6,7 +6,7 @@
     "128": "icon.png"
   },
   "description": "Replace Spotify Ads With Your Own Audio Files",
-  "homepage_url": "https://sanjeet.co",
+  "homepage_url": "https://github.com/thesanjeetc/ReplaceSpotifyAds",
   "content_scripts": [
     {
       "matches": ["*://open.spotify.com/*"],
