@@ -67,6 +67,4 @@ window.addEventListener("load", (e) => {
       }
     }
   }, 200);
-
-  playTune();
 });
