@@ -1,9 +1,10 @@
 let tunes;
-
 let tune = new Audio();
-let muted = false;
+
+let waiting = false;
 
 let muteSelector = ".spoticon-volume-16.control-button.volume-bar__icon";
+let unmuteSelector = ".spoticon-volume-off-16.control-button.volume-bar__icon";
 let disabledSkipSelector = ".spoticon-skip-forward-16.control-button--disabled";
 
 let url = chrome.runtime.getURL("audio.json");
@@ -14,46 +15,67 @@ fetch(url)
     tunes = json["audio"];
   });
 
-const waitForAd = () => {
-  let skipButton = document.querySelector(disabledSkipSelector);
+window.addEventListener("load", () => {
+  const isMute = () => {
+    let muteButton = document.querySelector(muteSelector);
+    if (muteButton == null) {
+      return true;
+    }
+    return false;
+  };
 
-  if (skipButton != null) {
-    setTimeout(() => waitForAd(), 200);
-  } else {
-    tune.pause();
+  const isAd = () => {
+    let skipButton = document.querySelector(disabledSkipSelector);
+    if (skipButton != null) {
+      return true;
+    }
+    return false;
+  };
 
-    muted = false;
-    muteButton.click();
-  }
-};
+  const mute = () => {
+    if (!isMute()) {
+      document.querySelector(muteSelector).click();
+    }
+  };
 
-const playTune = () => {
-  if (tunes.length != 0) {
-    src = tunes[Math.floor(Math.random() * tunes.length)];
-    tune.src = chrome.runtime.getURL("audio/" + src);
+  const unmute = () => {
+    if (isMute()) {
+      document.querySelector(unmuteSelector).click();
+    }
+  };
 
-    tune.currentTime = 0;
-    tune.play();
+  const waitForAd = () => {
+    waiting = true;
 
-    tune.onended = () => {
-      playTune();
-    };
-  }
-};
+    if (isAd()) {
+      setTimeout(() => waitForAd(), 200);
+    } else {
+      tune.pause();
+      unmute();
 
-window.addEventListener("load", (e) => {
-  let muteButton = document.querySelector(muteSelector);
+      waiting = false;
+    }
+  };
+
+  const playTune = () => {
+    if (tunes.length != 0 && !waiting) {
+      src = tunes[Math.floor(Math.random() * tunes.length)];
+      tune.src = chrome.runtime.getURL("audio/" + src);
+
+      tune.currentTime = 0;
+      tune.play();
+
+      tune.onended = () => {
+        playTune();
+      };
+    }
+  };
 
   setInterval(() => {
-    if (!muted) {
-      let skipButton = document.querySelector(disabledSkipSelector);
-
-      if (skipButton != null) {
-        muteButton.click();
-        muted = true;
-
+    if (!isMute() && !waiting) {
+      if (isAd()) {
+        mute();
         playTune();
-
         waitForAd();
       }
     }
