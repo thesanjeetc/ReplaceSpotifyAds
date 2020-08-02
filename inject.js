@@ -5,7 +5,7 @@ let waiting = false;
 
 let muteSelector = ".spoticon-volume-16.control-button.volume-bar__icon";
 let unmuteSelector = ".spoticon-volume-off-16.control-button.volume-bar__icon";
-let disabledSkipSelector = ".spoticon-skip-forward-16.control-button--disabled";
+let playingSelector = ".now-playing";
 
 let url = chrome.runtime.getURL("audio.json");
 
@@ -25,8 +25,8 @@ window.addEventListener("load", () => {
   };
 
   const isAd = () => {
-    let skipButton = document.querySelector(disabledSkipSelector);
-    if (skipButton != null) {
+    let nowPlaying = document.querySelector(playingSelector);
+    if (nowPlaying.getAttribute("aria-label").includes("Advertisement")) {
       return true;
     }
     return false;
